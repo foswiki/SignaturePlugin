@@ -21,7 +21,7 @@ use strict;
 
 # $VERSION is referred to by TWiki, and is the only global variable that
 # *must* exist in this package
-use vars qw( $VERSION $RELEASE $debug $pluginName );
+use vars qw( $VERSION $RELEASE $pluginName );
 
 # This should always be $Rev: 0$ so that TWiki can determine the checked-in
 # status of the plugin. It is used by the build automation tools, so
@@ -31,37 +31,31 @@ $VERSION = '$Rev: 0$';
 # This is a free-form string you can use to "name" your own plugin version.
 # It is *not* used by the build automation tools, but is reported as part
 # of the version number in PLUGINDESCRIPTIONS.
-$RELEASE = 'Dakar';
+$RELEASE = 'Foswiki';
 
 # Name of this Plugin, only used in this module
 $pluginName = 'SignaturePlugin';
 
 sub initPlugin {
-    my( $topic, $web, $user, $installWeb ) = @_;
+    my ( $topic, $web, $user, $installWeb ) = @_;
 
-    if( $TWiki::Plugins::VERSION < 1.1 ) {
-        TWiki::Func::writeWarning( "This version of $pluginName works only with TWiki 4 and greater." );
+    if ( $TWiki::Plugins::VERSION < 1.1 ) {
+        TWiki::Func::writeWarning(
+            "This version of $pluginName works only with TWiki 4 and greater.");
         return 0;
     }
 
-    # Get plugin debug flag
-    $debug = TWiki::Func::getPreferencesFlag( "\U$pluginName\E_DEBUG" );
-
-    # Plugin correctly initialized
-    TWiki::Func::writeDebug( "- TWiki::Plugins::${pluginName}::initPlugin( $web.$topic ) is OK" ) if $debug;
+    TWiki::Func::registerRESTHandler( 'sign', \&sign );
     return 1;
 
 }
 
-sub preRenderingHandler
-{
+sub preRenderingHandler {
 ### my ( $text ) = @_;   # do not uncomment, use $_[0], $_[1] instead
-
-    &TWiki::Func::writeDebug( "- $pluginName::preRenderingHandler" ) if $debug;
 
     # This handler is called by getRenderedVersion just before the line loop
     # Only bother with this plugin if viewing (i.e. not searching, etc)
-    return unless ($0 =~ m/view|viewauth|render/o);
+    return unless ( $0 =~ m/view|viewauth|render/o );
 
     my $cnt;
     $_[0] =~ s/%SIGNATURE(?:{(.*)})?%/&handleSignature($cnt++, $1)/geo;
@@ -69,8 +63,13 @@ sub preRenderingHandler
 }
 
 sub handleSignature {
-  require TWiki::Plugins::SignaturePlugin::Signature;
-  return TWiki::Plugins::SignaturePlugin::Signature::handleSignature(@_);
+    require TWiki::Plugins::SignaturePlugin::Signature;
+    return TWiki::Plugins::SignaturePlugin::Signature::handleSignature(@_);
+}
+
+sub sign {
+    require TWiki::Plugins::SignaturePlugin::Signature;
+    TWiki::Plugins::SignaturePlugin::Signature::sign(@_);
 }
 
 1;
