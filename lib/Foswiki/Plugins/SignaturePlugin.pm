@@ -23,10 +23,10 @@ use strict;
 # *must* exist in this package
 use vars qw( $VERSION $RELEASE $pluginName );
 
-# This should always be $Rev: 0$ so that TWiki can determine the checked-in
+# This should always be $Rev$ so that TWiki can determine the checked-in
 # status of the plugin. It is used by the build automation tools, so
 # you should leave it alone.
-$VERSION = '$Rev: 0$';
+$VERSION = '$Rev$';
 
 # This is a free-form string you can use to "name" your own plugin version.
 # It is *not* used by the build automation tools, but is reported as part
@@ -41,7 +41,7 @@ sub initPlugin {
 
     if ( $Foswiki::Plugins::VERSION < 1.1 ) {
         Foswiki::Func::writeWarning(
-            "This version of $pluginName works only with TWiki 4 and greater.");
+            "This version of $pluginName works only with Foswiki 1.0 and greater.");
         return 0;
     }
 

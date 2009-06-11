@@ -69,7 +69,14 @@ sub replaceSignature {
 
     my $wuser = Foswiki::Func::getWikiName($user);
     my %list = map { s/.*\.//; $_ => 1 } split( /[, ]+/, $attr->{name} );
+     foreach my $n (%list) {
+        if (Foswiki::Func::isGroup($n) || Foswiki::Func::isGroupMember($n,$wuser)) {
+            $list{$wuser} = 1;
+        }
+    }
+
     unless ( !$attr->{name} || $list{$wuser} ) {
+        use Foswiki::OopsException;
         my $session = $Foswiki::Plugins::SESSION;
         Foswiki::Func::setTopicEditLock( $session->{webName},
             $session->{topicName}, 0 );    # unlock Topic
@@ -98,9 +105,9 @@ sub replaceSignature {
     my $ourDate = sprintf( '%02d %s %d', $d, $months[$m], $y );
 
     $fmt =~ s/\$quot/\"/go;
-    $fmt =~ s/\$wikiusername/$user->webDotWikiName()/geo;
-    $fmt =~ s/\$wikiname/$user->wikiName()/geo;
-    $fmt =~ s/\$username/$user->login()/geo;
+    $fmt =~ s/\$wikiusername/&TWiki::Func::getWikiUserName($user)/geo;
+    $fmt =~ s/\$wikiname/&TWiki::Func::getWikiName($user)/geo;
+    $fmt =~ s/\$username/$user/geo;
     $fmt =~ s/\$date/$ourDate/geo;
 
     return $fmt;
@@ -132,7 +139,7 @@ sub doEnableEdit {
     ## SMELL: Update for TWiki 4.1 =checkTopicEditLock=
     my ( $oopsUrl, $lockUser ) =
       &Foswiki::Func::checkTopicEditLock( $theWeb, $theTopic, 'edit' );
-    if ( $lockUser && !( $lockUser eq $user->login ) ) {
+    if ( $lockUser && !( $lockUser eq $user ) ) {
 
         # warn user that other person is editing this topic
         &Foswiki::Func::redirectCgiQuery( $query, $oopsUrl );

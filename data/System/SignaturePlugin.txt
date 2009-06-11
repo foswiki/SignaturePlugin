@@ -1,8 +1,7 @@
-%META:TOPICINFO{author="ProjectContributor" date="1111929255" format="1.0" version="8"}%
+%META:TOPICINFO{author="donw" date="1244670250" format="1.1" reprev="1.2" version="1.2"}%
 ---+ Signature Plugin
 
 This plugin supports a simple tag which appears as a button with the label given by the =SIGNATURELABEL= setting. When clicked, it is replaced by the text given in the =SIGNATUREFORMAT= setting (this is typically the name of the logged in user and the current date).
-
 
 ---++ Syntax Rules
 
@@ -10,39 +9,41 @@ Insert the tag %<nop>SIGNATURE% anywhere in the topic, as many times as you like
 
 The following parameters are supported for the %<nop>SIGNATURE% tag.
 
-   | *Parameter:* | *Description:* | *Default:* |
-   | ="name"= | The wiki name of a user or group or a list of users/groups. Only these users or members of these groups are allowed to sign here. |  |
-   | ="format"= | The signature format for this particular signature. The syntax is the same as for the setting variable =SIGNATUREFORMAT=. |  |
+| *Parameter:* | *Description:* | *Default:* |
+| ="name"= | The wiki name of a user or group or a list of users/groups. Only these users or members of these groups are allowed to sign here. | |
+| ="format"= | The signature format for this particular signature. The syntax is the same as for the setting variable =SIGNATUREFORMAT=. | |
 
 ---++ Plugin Settings
 
-Plugin settings are stored as preferences variables. To reference
-a plugin setting write ==%<nop>&lt;plugin&gt;_&lt;setting&gt;%==, i.e. ==%<nop>SIGNATUREPLUGIN_SHORTDESCRIPTION%==
-   * Format of the signature line. The variables =$wikiusername=, =$wikiname=, $username, and =$date= can be used, indicating the WikiName of the logged in user prefixed with the user web, the WikiName of the logged in user, the login name of the logged in user, and the date of signing, respectively.
+Plugin settings are stored as preferences variables. To reference a plugin setting write ==%<nop>&lt;plugin&gt;_&lt;setting&gt;%==, i.e. ==%<nop>SIGNATUREPLUGIN_SHORTDESCRIPTION%==
+   * Format of the signature line. The variables =$wikiusername=, =$wikiname=, $username, and =$date= can be used, indicating the WikiName of the logged in user prefixed with the user web, the WikiName of the logged in user, the login name of the logged in user, and the date of signing, respectively. 
       * Set SIGNATUREFORMAT = $wikiusername - $date
-   * Label of the signature button
+   * Label of the signature button 
       * Set SIGNATURELABEL = Sign
 
-   * One line description, is shown in the %SYSTEMWEB%.TextFormattingRules topic:
+   * One line description, is shown in the %SYSTEMWEB%.TextFormattingRules topic: 
       * Set SHORTDESCRIPTION = Supports electronic signatures
 
 ---++ Plugin Installation Instructions
-%$INSTALL_INSTRUCTIONS%
+ You do not need to install anything in the browser to use this extension. The following instructions are for the administrator who installs the extension on the server.
 
-	* If installed correctly you should see a button with the label indicated by the setting below.
+Open configure, and open the "Extensions" section. Use "Find More Extensions" to get a list of available extensions. Select "Install".
 
+If you have any problems, or if the extension isn't available in =configure=, then you can still install manually from the command-line. See http://foswiki.org/Support/ManuallyInstallingExtensions for more help.
+
+   * If installed correctly you should see a button with the label indicated by the setting below.
 %SIGNATURE{name="AdminGroup"}%
 
 ---++ Plugin Info
 
 |  Plugin Author: | TWiki:Main/ThomasWeigert |
-|  Copyright: | &copy; 2006, Motorola |
+|  Copyright: | © 2006, Motorola |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
 |  Plugin Version: | 19 Nov 2006 |
-|  Change History: | <!-- versions below in reverse order -->&nbsp; |
+|  Change History: | <!-- versions below in reverse order --> |
+|  09 Jun 2009: | Updated for Foswiki namespace and API, fixed groups in the name list (Main.DonWennick) |
 |  03 Dec 2008: | FoswikibugLItem6109: recoded to avoid use of unpublished APIs (Crawford Currie) |
 |  19 Nov 2006: | Support user designation and user-specific format. |
 |  01 Aug 2006: | Initial release |
-|  Dependencies: | %$DEPENDENCIES% |
+|  Dependencies: | None |
 |  Plugin Home: | http://foswiki.org/Extensions/%TOPIC% |
-
