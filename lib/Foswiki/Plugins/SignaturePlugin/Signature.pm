@@ -105,8 +105,8 @@ sub replaceSignature {
     my $ourDate = sprintf( '%02d %s %d', $d, $months[$m], $y );
 
     $fmt =~ s/\$quot/\"/go;
-    $fmt =~ s/\$wikiusername/&TWiki::Func::getWikiUserName($user)/geo;
-    $fmt =~ s/\$wikiname/&TWiki::Func::getWikiName($user)/geo;
+    $fmt =~ s/\$wikiusername/&Foswiki::Func::getWikiUserName($user)/geo;
+    $fmt =~ s/\$wikiname/&Foswiki::Func::getWikiName($user)/geo;
     $fmt =~ s/\$username/$user/geo;
     $fmt =~ s/\$date/$ourDate/geo;
 
@@ -136,7 +136,6 @@ sub doEnableEdit {
         return 0;
     }
 
-    ## SMELL: Update for TWiki 4.1 =checkTopicEditLock=
     my ( $oopsUrl, $lockUser ) =
       &Foswiki::Func::checkTopicEditLock( $theWeb, $theTopic, 'edit' );
     if ( $lockUser && !( $lockUser eq $user ) ) {

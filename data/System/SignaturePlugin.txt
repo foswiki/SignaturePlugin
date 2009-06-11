@@ -1,4 +1,4 @@
-%META:TOPICINFO{author="donw" date="1244670250" format="1.1" reprev="1.2" version="1.2"}%
+%META:TOPICINFO{author="ProjectContributor" date="1244702900" format="1.1" version="1.1"}%
 ---+ Signature Plugin
 
 This plugin supports a simple tag which appears as a button with the label given by the =SIGNATURELABEL= setting. When clicked, it is replaced by the text given in the =SIGNATUREFORMAT= setting (this is typically the name of the logged in user and the current date).
@@ -36,14 +36,16 @@ If you have any problems, or if the extension isn't available in =configure=, th
 
 ---++ Plugin Info
 
-|  Plugin Author: | TWiki:Main/ThomasWeigert |
-|  Copyright: | © 2006, Motorola |
+|  Plugin Author: | Foswiki:Main.ThomasWeigert |
+|  Copyright: | © 2006, Motorola, 2009 Foswiki Contributors |
 |  License: | GPL ([[http://www.gnu.org/copyleft/gpl.html][GNU General Public License]]) |
-|  Plugin Version: | 19 Nov 2006 |
+|  Plugin Version: | 11 Jun 2009 |
 |  Change History: | <!-- versions below in reverse order --> |
-|  09 Jun 2009: | Updated for Foswiki namespace and API, fixed groups in the name list (Main.DonWennick) |
-|  03 Dec 2008: | FoswikibugLItem6109: recoded to avoid use of unpublished APIs (Crawford Currie) |
+|  11 Jun 2009: | Updated on Subversion at Foswiki. Fixed some function calls that were missed in the first name space conversion. Corrected revision. Corrected the plugin topic with correct Support link. Released. (Kenneth Lavrsen) |
+|  09 Jun 2009: | Updated for Foswiki namespace and API, fixed groups in the name list (Don Wennick) |
+|  03 Dec 2008: | Foswikibug:Item6109 - recoded to avoid use of unpublished APIs (Crawford Currie) |
 |  19 Nov 2006: | Support user designation and user-specific format. |
 |  01 Aug 2006: | Initial release |
 |  Dependencies: | None |
 |  Plugin Home: | http://foswiki.org/Extensions/%TOPIC% |
+|  Support: | http://foswiki.org/Support/%TOPIC% |
