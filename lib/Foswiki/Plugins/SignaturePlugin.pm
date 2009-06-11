@@ -14,7 +14,7 @@
 #
 # For licensing info read LICENSE file in the TWiki root.
 
-package TWiki::Plugins::SignaturePlugin;
+package Foswiki::Plugins::SignaturePlugin;
 
 # Always use strict to enforce variable scoping
 use strict;
@@ -39,13 +39,13 @@ $pluginName = 'SignaturePlugin';
 sub initPlugin {
     my ( $topic, $web, $user, $installWeb ) = @_;
 
-    if ( $TWiki::Plugins::VERSION < 1.1 ) {
-        TWiki::Func::writeWarning(
+    if ( $Foswiki::Plugins::VERSION < 1.1 ) {
+        Foswiki::Func::writeWarning(
             "This version of $pluginName works only with TWiki 4 and greater.");
         return 0;
     }
 
-    TWiki::Func::registerRESTHandler( 'sign', \&sign );
+    Foswiki::Func::registerRESTHandler( 'sign', \&sign );
     return 1;
 
 }
@@ -63,13 +63,13 @@ sub preRenderingHandler {
 }
 
 sub handleSignature {
-    require TWiki::Plugins::SignaturePlugin::Signature;
-    return TWiki::Plugins::SignaturePlugin::Signature::handleSignature(@_);
+    require Foswiki::Plugins::SignaturePlugin::Signature;
+    return Foswiki::Plugins::SignaturePlugin::Signature::handleSignature(@_);
 }
 
 sub sign {
-    require TWiki::Plugins::SignaturePlugin::Signature;
-    TWiki::Plugins::SignaturePlugin::Signature::sign(@_);
+    require Foswiki::Plugins::SignaturePlugin::Signature;
+    Foswiki::Plugins::SignaturePlugin::Signature::sign(@_);
 }
 
 1;

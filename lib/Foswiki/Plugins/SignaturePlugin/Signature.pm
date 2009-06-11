@@ -1,19 +1,19 @@
 # Detail for SignaturePlugin
 #
 
-package TWiki::Plugins::SignaturePlugin::Signature;
+package Foswiki::Plugins::SignaturePlugin::Signature;
 
 # Always use strict to enforce variable scoping
 use strict;
-use TWiki::Attrs;
+use Foswiki::Attrs;
 
 sub handleSignature {
     my ( $cnt, $attr ) = @_;
-    my $session = $TWiki::Plugins::SESSION;
+    my $session = $Foswiki::Plugins::SESSION;
 
-    $attr = new TWiki::Attrs($attr);
-    my $lbl = TWiki::Func::getPreferencesValue(
-        "\U$TWiki::Plugins::SignaturePlugin::pluginName\E_SIGNATURELABEL")
+    $attr = new Foswiki::Attrs($attr);
+    my $lbl = Foswiki::Func::getPreferencesValue(
+        "\U$Foswiki::Plugins::SignaturePlugin::pluginName\E_SIGNATURELABEL")
       || 'Sign';
 
     my $name = '';
@@ -21,14 +21,14 @@ sub handleSignature {
 
     return
         "<noautolink> $name </noautolink><form action=\""
-      . &TWiki::Func::getScriptUrl( 'SignaturePlugin', 'sign', 'rest' )
+      . &Foswiki::Func::getScriptUrl( 'SignaturePlugin', 'sign', 'rest' )
       . "\" /><input type=\"hidden\" name=\"nr\" value=\"$cnt\" /><input type=\"submit\" value=\"$lbl\" /><input type=\"hidden\" name=\"topic\" value=\"$session->{webName}.$session->{topicName}\" /></form>";
 
 }
 
 sub sign {
     my $session = shift;
-    $TWiki::Plugins::SESSION = $session;
+    $Foswiki::Plugins::SESSION = $session;
     my $query = $session->{cgiQuery};
     return unless ($query);
 
@@ -42,20 +42,20 @@ sub sign {
       unless (
         &doEnableEdit( $webName, $topic, $user, $query, 'editTableRow' ) );
 
-    my ( $meta, $text ) = &TWiki::Func::readTopic( $webName, $topic );
+    my ( $meta, $text ) = &Foswiki::Func::readTopic( $webName, $topic );
     $text =~ s/%SIGNATURE(?:{(.*)})?%/&replaceSignature($cnt--, $user, $1)/geo;
 
-    my $error = &TWiki::Func::saveTopicText( $webName, $topic, $text, 1 );
-    TWiki::Func::setTopicEditLock( $webName, $topic, 0 );    # unlock Topic
+    my $error = &Foswiki::Func::saveTopicText( $webName, $topic, $text, 1 );
+    Foswiki::Func::setTopicEditLock( $webName, $topic, 0 );    # unlock Topic
     if ($error) {
-        TWiki::Func::redirectCgiQuery( $query, $error );
+        Foswiki::Func::redirectCgiQuery( $query, $error );
         return 0;
     }
     else {
 
         # and finally display topic
-        TWiki::Func::redirectCgiQuery( $query,
-            &TWiki::Func::getViewUrl( $webName, $topic ) );
+        Foswiki::Func::redirectCgiQuery( $query,
+            &Foswiki::Func::getViewUrl( $webName, $topic ) );
     }
 
 }
@@ -65,15 +65,15 @@ sub replaceSignature {
 
     return ( ($attr) ? "%SIGNATURE{$attr}%" : '%SIGNATURE%' ) if $dont;
 
-    $attr = new TWiki::Attrs($attr);
+    $attr = new Foswiki::Attrs($attr);
 
-    my $wuser = TWiki::Func::getWikiName($user);
+    my $wuser = Foswiki::Func::getWikiName($user);
     my %list = map { s/.*\.//; $_ => 1 } split( /[, ]+/, $attr->{name} );
     unless ( !$attr->{name} || $list{$wuser} ) {
-        my $session = $TWiki::Plugins::SESSION;
-        TWiki::Func::setTopicEditLock( $session->{webName},
+        my $session = $Foswiki::Plugins::SESSION;
+        Foswiki::Func::setTopicEditLock( $session->{webName},
             $session->{topicName}, 0 );    # unlock Topic
-        throw TWiki::OopsException(
+        throw Foswiki::OopsException(
             'generic',
             web    => $session->{webName},
             topic  => $session->{topicName},
@@ -88,8 +88,8 @@ sub replaceSignature {
     }
 
     my $fmt = $attr->{format}
-      || TWiki::Func::getPreferencesValue(
-        "\U$TWiki::Plugins::SignaturePlugin::pluginName\E_SIGNATUREFORMAT")
+      || Foswiki::Func::getPreferencesValue(
+        "\U$Foswiki::Plugins::SignaturePlugin::pluginName\E_SIGNATUREFORMAT")
       || '$wikiusername - $date';
 
     my @months = qw(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec);
@@ -111,14 +111,14 @@ sub doEnableEdit {
     my ( $theWeb, $theTopic, $user, $query ) = @_;
 
     if (
-        !&TWiki::Func::checkAccessPermission(
+        !&Foswiki::Func::checkAccessPermission(
             "change", $user, "", $theTopic, $theWeb
         )
       )
     {
 
         # user does not have permission to change the topic
-        throw TWiki::OopsException(
+        throw Foswiki::OopsException(
             'accessdenied',
             def   => 'topic_access',
             web   => $_[2],
@@ -131,14 +131,14 @@ sub doEnableEdit {
 
     ## SMELL: Update for TWiki 4.1 =checkTopicEditLock=
     my ( $oopsUrl, $lockUser ) =
-      &TWiki::Func::checkTopicEditLock( $theWeb, $theTopic, 'edit' );
+      &Foswiki::Func::checkTopicEditLock( $theWeb, $theTopic, 'edit' );
     if ( $lockUser && !( $lockUser eq $user->login ) ) {
 
         # warn user that other person is editing this topic
-        &TWiki::Func::redirectCgiQuery( $query, $oopsUrl );
+        &Foswiki::Func::redirectCgiQuery( $query, $oopsUrl );
         return 0;
     }
-    TWiki::Func::setTopicEditLock( $theWeb, $theTopic, 1 );
+    Foswiki::Func::setTopicEditLock( $theWeb, $theTopic, 1 );
 
     return 1;
 
