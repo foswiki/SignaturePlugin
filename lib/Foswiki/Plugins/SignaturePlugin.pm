@@ -42,8 +42,7 @@ sub initPlugin {
 
     if ( $Foswiki::Plugins::VERSION < 1.1 ) {
         Foswiki::Func::writeWarning(
-"This version of $pluginName works only with Foswiki 1.0 and greater."
-        );
+            "This version of $pluginName works only with Foswiki 1.0 and greater.");
         return 0;
     }
 

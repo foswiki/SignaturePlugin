@@ -69,10 +69,8 @@ sub replaceSignature {
 
     my $wuser = Foswiki::Func::getWikiName($user);
     my %list = map { s/.*\.//; $_ => 1 } split( /[, ]+/, $attr->{name} );
-    foreach my $n (%list) {
-        if (   Foswiki::Func::isGroup($n)
-            || Foswiki::Func::isGroupMember( $n, $wuser ) )
-        {
+     foreach my $n (%list) {
+        if (Foswiki::Func::isGroup($n) || Foswiki::Func::isGroupMember($n,$wuser)) {
             $list{$wuser} = 1;
         }
     }
